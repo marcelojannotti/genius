@@ -1,0 +1,110 @@
+<html>
+  <head>
+    <title>Genius</title>
+    <script>
+function Genius () {
+  oGen = this;
+  var seq = 0,seqAtual = 0,ordem = Array,lock=true;
+  this.init = function () {
+    var rand = (Math.floor(Math.random() * 10) % 3) + 1;
+    seq = 0;
+    seqAtual = 0;
+    ordem = Array();
+    ordem[seq] = rand;
+    document.querySelector('#genius #b1').onclick = function(){oGen.select(1)};
+    document.querySelector('#genius #b2').onclick = function(){oGen.select(2)};
+    document.querySelector('#genius #b3').onclick = function(){oGen.select(3)};
+    document.querySelector('#genius #b4').onclick = function(){oGen.select(4)};
+    oGen.play();
+  }
+  this.select = function(n) {
+    if (lock) return null;
+    if (n == ordem[seqAtual]) {
+      this.correct();
+      return true;
+    } else {
+      this.incorrect();
+      return false;
+    }
+  }
+  this.correct = function () {
+    if (seqAtual == seq) {
+      seq++;
+      seqAtual = 0;
+      var rand = (Math.floor(Math.random() * 10) % 3) + 1;
+      ordem[seq] = rand;
+      oGen.play();
+    } else {
+      seqAtual++;
+    }
+  }
+  this.incorrect = function () {
+    alert('Você acertou '+seq+' vezes');
+    if (confirm('Deseja jogar novamente')) oGen.init();
+  }
+  this.play = function () {
+    lock = true;
+    for (i in ordem) {
+      document.querySelector('#genius #b'+ordem[i]).style['opacity'] = 1;
+      setTimeout(function(){document.querySelector('#genius #b'+ordem[this]).style['opacity'] = 0.5;lock = false;}.bind(i),2000);
+    }
+  }
+  window.addEventListener('load',this.init);
+}
+(new Genius);
+    </script>
+    <style>
+      body {
+        margin:0;
+        padding:0;
+      }
+      #genius {
+        width:80%;
+        height:80%;
+        background: black;
+        border-radius:50%;
+        text-align:center;
+        padding:5%;
+      }
+      #b1,#b2,#b3,#b4 {
+        width:45%;
+        height:45%;
+        display:inline-block;
+        border-radius:3pc;
+        margin:2%;
+      }
+      #b1 {
+        border-top-left-radius: 100%;
+        background: rgb(0,255,0);
+        opacity: 0.5;
+      }
+      #b2 {
+        border-top-right-radius: 100%;
+        background: rgb(0,0,255);
+        opacity: 0.5;
+      }
+      #b3 {
+        border-bottom-left-radius: 100%;
+        background: rgb(255,0,0);
+        opacity: 0.5;
+      }
+      #b4 {
+        border-bottom-right-radius: 100%;
+        background: rgb(255,255,0);
+        opacity: 0.5;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="genius">
+      <div id="b1">
+      </div>
+      <div id="b2">
+      </div>
+      <div id="b3">
+      </div>
+      <div id="b4">
+      </div>
+    </div>
+  </body>
+</html>
