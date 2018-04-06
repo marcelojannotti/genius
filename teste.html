@@ -6,7 +6,7 @@ function Genius () {
   oGen = this;
   var seq = 0,seqAtual = 0,ordem = Array,lock=true;
   this.init = function () {
-    var rand = (Math.floor(Math.random() * 10) % 3) + 1;
+    var rand = (Math.floor(Math.random() * 10) % 4) + 1;
     seq = 0;
     seqAtual = 0;
     ordem = Array();
@@ -15,15 +15,15 @@ function Genius () {
     document.querySelector('#genius #b2').onclick = function(){oGen.select(2)};
     document.querySelector('#genius #b3').onclick = function(){oGen.select(3)};
     document.querySelector('#genius #b4').onclick = function(){oGen.select(4)};
-    oGen.play();
-  }
+    this.play(ordem);
+  };
   this.select = function(n) {
     if (lock) return null;
     if (n == ordem[seqAtual]) {
-      this.correct();
+      this.play([n],this.correct);
       return true;
     } else {
-      this.incorrect();
+      this.play([n],this.incorrect);
       return false;
     }
   }
@@ -31,27 +31,29 @@ function Genius () {
     if (seqAtual == seq) {
       seq++;
       seqAtual = 0;
-      var rand = (Math.floor(Math.random() * 10) % 3) + 1;
+      var rand = (Math.floor(Math.random() * 10) % 4) + 1;
       ordem[seq] = rand;
-      oGen.play();
+      this.play(ordem);
     } else {
       seqAtual++;
     }
   }
   this.incorrect = function () {
     alert('Você acertou '+seq+' vezes');
-    if (confirm('Deseja jogar novamente')) oGen.init();
+    if (confirm('Deseja jogar novamente')) this.init();
   }
-  this.play = function () {
+  this.play = function (luzes,callback) {
     lock = true;
-    for (i in ordem) {
-      document.querySelector('#genius #b'+ordem[i]).style['opacity'] = 1;
-      setTimeout(function(){document.querySelector('#genius #b'+ordem[this]).style['opacity'] = 0.5;lock = false;}.bind(i),2000);
+    for (i in luzes) {
+    console.log((1000*parseInt(i))+200);
+      setTimeout(function(n){document.querySelector('#genius #b'+luzes[n]).style['opacity'] = 1;},(1000*parseInt(i))+200,i);
+      if (i < (luzes.length-1)) setTimeout(function(n){document.querySelector('#genius #b'+luzes[n]).style['opacity'] = null;},1000*(parseInt(i)+1),i);
+      else setTimeout(function(n){document.querySelector('#genius #b'+luzes[n]).style['opacity'] = null;lock = false;if (typeof(callback) == 'function') callback.call(oGen);},1000*(parseInt(i)+1),i);
     }
   }
-  window.addEventListener('load',this.init);
+  setTimeout(function(){this.init()}.bind(this),1000);
 }
-(new Genius);
+window.addEventListener('load',function() {(new Genius)});
     </script>
     <style>
       body {
