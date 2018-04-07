@@ -45,11 +45,27 @@ function Genius () {
   this.play = function (luzes,callback) {
     lock = true;
     for (i in luzes) {
-    console.log((1000*parseInt(i))+200);
-      setTimeout(function(n){document.querySelector('#genius #b'+luzes[n]).style['opacity'] = 1;},(1000*parseInt(i))+200,i);
+      setTimeout(function(n){document.querySelector('#genius #b'+luzes[n]).style['opacity'] = 1;oGen.audio(luzes[n]);},(1000*parseInt(i))+200,i);
       if (i < (luzes.length-1)) setTimeout(function(n){document.querySelector('#genius #b'+luzes[n]).style['opacity'] = null;},1000*(parseInt(i)+1),i);
       else setTimeout(function(n){document.querySelector('#genius #b'+luzes[n]).style['opacity'] = null;lock = false;if (typeof(callback) == 'function') callback.call(oGen);},1000*(parseInt(i)+1),i);
     }
+  }
+  this.audio = function (n) {
+    var endTime = 0.1,
+    audioTime = Array;
+    audioTime[1] = 0.8;
+    audioTime[2] = 1.2;
+    audioTime[3] = 1.6;
+    audioTime[4] = 1.9;
+    elAudio = document.createElement('audio');
+    elAudio.src = 'https://freesound.org/data/previews/22/22684_1112-lq.mp3';
+    elAudio.currentTime = audioTime[n];
+    elAudio.addEventListener("timeupdate", function() {
+		  if(this.currentTime >= audioTime[n]+endTime) {
+		      this.pause();
+		  }
+		});
+		elAudio.play();
   }
   setTimeout(function(){this.init()}.bind(this),1000);
 }
