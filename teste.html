@@ -46,7 +46,7 @@ function Genius () {
   this.play = function (luzes,callback) {
     lock = true;
     for (i in luzes) {
-      setTimeout(function(n){document.querySelector('#genius #b'+luzes[n]).style['opacity'] = 1;oGen.audio(0);},(1000*parseInt(i))+200,i);
+      setTimeout(function(n){document.querySelector('#genius #b'+luzes[n]).style['opacity'] = 1;oGen.audio(luzes[n]);},(1000*parseInt(i))+200,i);
       if (i < (luzes.length-1)) setTimeout(function(n){document.querySelector('#genius #b'+luzes[n]).style['opacity'] = null;},1000*(parseInt(i)+1),i);
       else setTimeout(function(n){document.querySelector('#genius #b'+luzes[n]).style['opacity'] = null;lock = false;if (typeof(callback) == 'function') callback.call(oGen);},1000*(parseInt(i)+1),i);
     }
