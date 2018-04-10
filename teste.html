@@ -4,7 +4,7 @@
     <script>
 function Genius () {
   oGen = this;
-  var seq = 0,seqAtual = 0,ordem = Array,lock=true,elAudio = document.createElement('audio');
+  var seq = 0,seqAtual = 0,ordem = Array,lock=true;
   this.init = function () {
     var rand = (Math.floor(Math.random() * 10) % 4) + 1;
     seq = 0;
@@ -39,34 +39,28 @@ function Genius () {
     }
   }
   this.incorrect = function () {
-    elAudio.onended = function () {
-      alert('Você acertou '+seq+' vezes');
-      if (confirm('Deseja jogar novamente')) this.init();  
-    }
-    oGen.audio(0);
+    alert('Você acertou '+seq+' vezes');
+    if (confirm('Deseja jogar novamente')) this.init();
   }
   this.play = function (luzes,callback) {
     lock = true;
     for (i in luzes) {
-      elAudio.onended = function () {
-        document.querySelector('#genius #b'+luzes[i]).style['opacity'] = null;
-        if (i >= (luzes.length-1) && typeof(callback) == 'function') callback.call(oGen);
-        lock = false;
-      };
-      document.querySelector('#genius #b'+luzes[i]).style['opacity'] = 1;
-      oGen.audio(luzes[i]);
+      setTimeout(function(n){document.querySelector('#genius #b'+luzes[n]).style['opacity'] = 1;oGen.audio(luzes[n]);},(1000*parseInt(i))+200,i);
+      if (i < (luzes.length-1)) setTimeout(function(n){document.querySelector('#genius #b'+luzes[n]).style['opacity'] = null;},1000*(parseInt(i)+1),i);
+      else setTimeout(function(n){document.querySelector('#genius #b'+luzes[n]).style['opacity'] = null;lock = false;if (typeof(callback) == 'function') callback.call(oGen);},1000*(parseInt(i)+1),i);
     }
   }
   this.audio = function (n) {
-    var audioTime = Array;
+    var endTime = 0.1,
+    audioTime = Array;
     audioTime[0] = 'fail.mp3';
     audioTime[1] = '1.mp3';
     audioTime[2] = '2.mp3';
     audioTime[3] = '3.mp3';
     audioTime[4] = '4.mp3';
+    var elAudio = document.createElement('audio');
     elAudio.src = audioTime[n];
-    elAudio.load();
-    elAudio.play();
+		elAudio.play();
   }
   setTimeout(function(){this.init()}.bind(this),1000);
 }
