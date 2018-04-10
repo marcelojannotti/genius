@@ -49,13 +49,13 @@ function Genius () {
     lock = true;
     for (i in luzes) {
       elAudio.onended = function () {
-        document.querySelector('#genius #b'+luzes[this]).style['opacity'] = null;
-        if (this >= (luzes.length-1) && typeof(callback) == 'function') callback.call(oGen);
-      }.bind(i);
+        document.querySelector('#genius #b'+luzes[i]).style['opacity'] = null;
+        if (i >= (luzes.length-1) && typeof(callback) == 'function') callback.call(oGen);
+        lock = false;
+      };
       document.querySelector('#genius #b'+luzes[i]).style['opacity'] = 1;
       oGen.audio(luzes[i]);
     }
-    lock = false;
   }
   this.audio = function (n) {
     var audioTime = Array;
