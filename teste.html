@@ -65,6 +65,7 @@ function Genius () {
     audioTime[3] = '3.mp3';
     audioTime[4] = '4.mp3';
     elAudio.src = audioTime[n];
+    elAudio.load();
     elAudio.play();
   }
   setTimeout(function(){this.init()}.bind(this),1000);
