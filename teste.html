@@ -4,7 +4,7 @@
     <script>
 function Genius () {
   oGen = this;
-  var seq = 0,seqAtual = 0,ordem = Array,lock=true;
+  var seq = 0,seqAtual = 0,ordem = Array,lock=true,elAudio = document.createElement('audio');
   this.init = function () {
     var rand = (Math.floor(Math.random() * 10) % 4) + 1;
     seq = 0;
@@ -39,9 +39,11 @@ function Genius () {
     }
   }
   this.incorrect = function () {
+    elAudio.onended = function () {
+      alert('Você acertou '+seq+' vezes');
+      if (confirm('Deseja jogar novamente')) this.init();  
+    }
     oGen.audio(0);
-    alert('Você acertou '+seq+' vezes');
-    if (confirm('Deseja jogar novamente')) this.init();
   }
   this.play = function (luzes,callback) {
     lock = true;
@@ -58,7 +60,6 @@ function Genius () {
     audioTime[2] = '2.mp3';
     audioTime[3] = '3.mp3';
     audioTime[4] = '4.mp3';
-    elAudio = document.createElement('audio');
     elAudio.src = audioTime[n];
     elAudio.play();
   }
